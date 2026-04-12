@@ -7,7 +7,7 @@ function programCheckStatus(name, interval, task){
     if (typeof name !== 'string' || name.trim() === '') {
         throw new Error("Error: name must be a string and not empty");
     }
-    if (typeof interval !== 'number') {
+    if (typeof interval !== 'number' || interval <= 0 ) {
         throw new Error("Error: interval must be a number");
     }
         if (typeof task !== 'function') {
