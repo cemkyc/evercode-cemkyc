@@ -8,10 +8,10 @@ const validateSchedulerParams = require('../Validators/valid')
 //     log("running");
 // }
 
-function scheduleTask(name, interval, task) {
-    validateSchedulerParams(name, interval, task);
+function scheduleTask(name, interval, task, reqId) {
+    validateSchedulerParams(name, interval, task, reqId);
 
-    log(`Task "${name}" started`);
+    log.info(`Task "${name}" started`);
     setInterval(task, interval);
 }
 
