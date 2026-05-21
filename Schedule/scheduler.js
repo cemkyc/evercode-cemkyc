@@ -8,11 +8,11 @@ const validateSchedulerParams = require('../Validators/valid')
 //     log("running");
 // }
 
-function scheduleTask (name, interval, task){
-    validateSchedulerParams (name, interval, task);
+function scheduleTask(name, interval, task) {
+    validateSchedulerParams(name, interval, task);
 
-    log (`Task "${name}" started`);
+    log(`Task "${name}" started`);
     setInterval(task, interval);
-};
+}
 
 module.exports = scheduleTask;
