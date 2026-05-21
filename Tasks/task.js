@@ -1,7 +1,7 @@
 const log = require('../Logger/logger');
 
 function runningTask(){
-    log("running");
+    log.info("Running");
 }
 
 module.exports = runningTask;
