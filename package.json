@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node app.js"
+    "start": "node serverStart.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,10 @@
   "homepage": "https://github.com/cemkyc/evercode-cemkyc#readme",
   "devDependencies": {
     "jest": "^30.4.2"
+  },
+  "dependencies": {
+    "axios": "^1.16.1",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
   }
 }

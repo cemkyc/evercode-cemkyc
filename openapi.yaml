@@ -1,0 +1,20 @@
+openapi: 3.0.0
+
+info:
+  title: Currency API
+  version: 1.0.0
+
+paths:
+  /status:
+    get:
+      summary: Health check
+
+  /currencies:
+    get:
+      summary: Get currencies
+    post:
+      summary: Create currency
+
+  /price:
+    get:
+      summary: Get Binance prices
