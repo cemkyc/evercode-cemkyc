@@ -1,70 +1,111 @@
 const express = require('express');
-const currencies = require('../Storage/currencyStorage');
+const currencyRepository = require('../Repository/currencyRepository');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  const { name, ticker } = req.body;
+router.post('/', async (req, res) => {
+  try {
+    const { name, ticker } = req.body;
 
-  const currency = {
-    name,
-    ticker
-  };
+    const currency = await currencyRepository.create(
+      name,
+      ticker
+    );
 
-  currencies.push(currency);
+    res.status(201).json(currency);
 
-  res.status(201).json(currency);
-});
-
-router.get('/', (req, res) => {
-  res.json(currencies);
-});
-
-router.get('/:ticker', (req, res) => {
-  const currency = currencies.find(
-    item => item.ticker === req.params.ticker
-  );
-
-  if (!currency) {
-    return res.status(404).json({
-      message: 'Currency not found'
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
     });
   }
-
-  res.json(currency);
 });
 
-router.put('/:ticker', (req, res) => {
-  const currency = currencies.find(
-    item => item.ticker === req.params.ticker
-  );
+router.get('/', async (req, res) => {
+  try {
+    const currencies =
+      await currencyRepository.findAll();
 
-  if (!currency) {
-    return res.status(404).json({
-      message: 'Currency not found'
+    res.json(currencies);
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
     });
   }
-
-  currency.name = req.body.name;
-  currency.ticker = req.body.ticker;
-
-  res.json(currency);
 });
 
-router.delete('/:ticker', (req, res) => {
-  const index = currencies.findIndex(
-    item => item.ticker === req.params.ticker
-  );
+router.get('/:ticker', async (req, res) => {
+  try {
+    const currency =
+      await currencyRepository.findByTicker(
+        req.params.ticker
+      );
 
-  if (index === -1) {
-    return res.status(404).json({
-      message: 'Currency not found'
+    if (!currency) {
+      return res.status(404).json({
+        message: 'Currency not found'
+      });
+    }
+
+    res.json(currency);
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
     });
   }
+});
 
-  currencies.splice(index, 1);
+router.put('/:ticker', async (req, res) => {
+  try {
+    const { name, ticker } = req.body;
 
-  res.status(204).send();
+    const changes =
+      await currencyRepository.update(
+        req.params.ticker,
+        name,
+        ticker
+      );
+
+    if (!changes) {
+      return res.status(404).json({
+        message: 'Currency not found'
+      });
+    }
+
+    res.json({
+      name,
+      ticker
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+});
+
+router.delete('/:ticker', async (req, res) => {
+  try {
+    const changes =
+      await currencyRepository.delete(
+        req.params.ticker
+      );
+
+    if (!changes) {
+      return res.status(404).json({
+        message: 'Currency not found'
+      });
+    }
+
+    res.status(204).send();
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
 });
 
 module.exports = router;
