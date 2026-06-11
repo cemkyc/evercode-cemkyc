@@ -19,7 +19,7 @@ function formatMessage(level, message, requestId) {
     }
     return base;
 }
-
+//переделать
 function log(level, message, requestId) {
     if (LEVELS[level] > LEVELS[currentLevel]) return;
     const output = formatMessage(level, message, requestId);

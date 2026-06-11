@@ -1,37 +1,25 @@
 const express = require('express');
-const currencyRepository = require('../Repository/currencyRepository');
-const { getPrices } = require('../Services/binanceService');
 
 const router = express.Router();
 
+const repository = require('../Repository/currencyRepository');
+
 router.get('/', async (req, res) => {
+
   const { currency } = req.query;
 
-  const exists =
-    await currencyRepository.findByTicker(
-      currency
-    );
+  const result = await repository.findByTicker(currency);
 
-  if (!exists) {
+  if (!result) {
     return res.status(404).json({
-      message: 'Currency not found'
-    });
+      message: "Currency not found"});
   }
 
-  try {
-    const data = await getPrices();
+  res.json({
+    ticker: result.ticker,
+    price: result.price
+  });
 
-    const filtered = data.filter(item =>
-      item.symbol.includes(currency)
-    );
-
-    res.json(filtered);
-
-  } catch (error) {
-    res.status(500).json({
-      message: 'Binance error'
-    });
-  }
 });
 
 module.exports = router;

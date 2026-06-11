@@ -46,8 +46,25 @@ function findByTicker(ticker) {
   });
 }
 
+function updatePrice(ticker, price) {
+  return new Promise((resolve, reject) => {
+    db.run(
+      'UPDATE currencies SET price = ? WHERE ticker = ?',
+      [price, ticker],
+      function (err) {
+        if (err) {
+          return reject(err);
+        }
+
+        resolve(this.changes);
+      }
+    );
+  });
+}
+
 module.exports = {
   create,
   findAll,
-  findByTicker
+  findByTicker,
+  updatePrice
 };

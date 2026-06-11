@@ -1,14 +1,14 @@
 const sqlite3 = require('sqlite3').verbose();
 const log = require('../Logger/logger');
-
-const db = new sqlite3.Database('./database.sqlite');
+const db = require('./database');
 
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS currencies (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
-      ticker TEXT NOT NULL UNIQUE
+      ticker TEXT NOT NULL UNIQUE,
+      price REAL
     )
   `);
 

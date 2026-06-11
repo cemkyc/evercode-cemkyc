@@ -75,3 +75,4 @@ describe('Currency DB tests', () => {
   });
 
 });
+
